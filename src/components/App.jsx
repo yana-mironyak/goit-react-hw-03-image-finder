@@ -16,8 +16,10 @@ export class App extends Component {
     modalImg: {}
   }
 
-  handleSubmit = ( {searchImages}, {resetForm} ) => {
-
+  handleSubmit = ({ searchImages }, { resetForm }) => {
+    if (searchImages === this.state.searchImages) {
+      return;
+    }
     this.setState({ searchImages });
     this.setState({ gallery: [], page: 1 });
     resetForm();

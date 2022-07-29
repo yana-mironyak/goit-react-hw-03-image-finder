@@ -1,0 +1,5 @@
+.loaderWrapp {
+    display: flex;
+    padding-top: 40px;
+    justify-content: center;
+}
