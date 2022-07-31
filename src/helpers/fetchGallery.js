@@ -7,7 +7,7 @@ async function fetchGallery(image, page) {
     try {
         const response = await axios.get(url);
         if (response.data.length === 0) { console.log('something goes wrong') }
-        return response.data.hits
+        return response.data
     } catch (error) { console.log(error) }   
 }
   

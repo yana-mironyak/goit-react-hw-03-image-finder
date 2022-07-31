@@ -13,16 +13,16 @@ export class App extends Component {
     page: 1,
     status: 'idle',
     isModalOpen: false,
-    modalImg: {}
+    modalImg: {},
+    totalHits: ''
   }
 
-  handleSubmit = ({ searchImages }, { resetForm }) => {
+  handleSubmit = ({ searchImages }) => {
     if (searchImages === this.state.searchImages) {
       return;
     }
     this.setState({ searchImages });
     this.setState({ gallery: [], page: 1 });
-    resetForm();
   }
   
   async componentDidUpdate(_, prevState) {
@@ -30,8 +30,7 @@ export class App extends Component {
     if (prevState.searchImages !== searchImages || prevState.page !== page) {
       this.setState({ status: 'pending' });
       const response = await fetchGallery(searchImages, page); 
-      this.setState({ status: 'resolved' });
-      this.setState(prevState => ({ gallery: [...prevState.gallery, ...response] }));
+      this.setState(prevState => ({ gallery: [...prevState.gallery, ...response.hits], status: 'resolved', totalHits: response.totalHits }));
       if (this.state.gallery.length === 0) { <div>Ooooops! I can not find this</div> };
     }
   }
@@ -50,13 +49,14 @@ export class App extends Component {
   }
 
   render() {
+    const { status, gallery, isModalOpen, modalImg, totalHits } = this.state;
     return (
       <>
           <Searchbar onSubmit={this.handleSubmit} />
-          {this.state.status === "pending" && <Loader />}
-          {this.state.status === "resolved" && <ImageGallery imageGallery={this.state.gallery} openModal={this.getModalImage} />}
-          {this.state.gallery.length > 0 && <Button onClick={this.handleClick} />}
-          {this.state.isModalOpen && <Modal largeImgUrl={this.state.modalImg.largeImgUrl} tag={this.state.modalImg.tag} closeModal={this.closeModal} /> }           
+          {status === "pending" && <Loader />}
+          {(status === "resolved" || gallery.length > 0) && <ImageGallery imageGallery={gallery} openModal={this.getModalImage} />}
+          {(gallery.length > 0 && gallery.length < totalHits) && <Button onClick={this.handleClick} />}
+          {isModalOpen && <Modal largeImgUrl={modalImg.largeImgUrl} tag={modalImg.tag} closeModal={this.closeModal} /> }           
       </>
       )
   }

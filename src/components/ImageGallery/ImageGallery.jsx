@@ -16,5 +16,7 @@ export default ImageGallery;
 ImageGallery.propTypes = {
     imageGallery: PropTypes.arrayOf(PropTypes.shape({
         webformatURL: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
     })),
+    openModal: PropTypes.func.isRequired,
 }

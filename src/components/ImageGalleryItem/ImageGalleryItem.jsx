@@ -15,5 +15,5 @@ ImageGalleryItem.propTypes = {
     id: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
-    openModal: PropTypes.func,
+    openModal: PropTypes.func.isRequired,
 }
